@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABM_CTF</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-neon-blue: #00f0ff;
+            --color-cyan-glow: #00c3ff;
+            --color-dark-bg: #050505;
+        }
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Fira Code', monospace;
+            overflow-x: hidden;
+        }
+        ::selection {
+            background: #00f0ff;
+            color: #000;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0088cc;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f0ff;
+        }
+        .bg-grid-pattern {
+            background-image: url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 0h40v40H0V0zm1 1h38v38H1V1z" fill="%2300f0ff" fill-opacity="0.05" fill-rule="evenodd"/%3E%3C/svg%3E');
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row">
+
+    <!-- Mobile Header -->
+    <div class="md:hidden border-b border-cyan-500/20 p-4 flex justify-between items-center bg-black z-50 sticky top-0">
+        <div class="flex items-center gap-2 text-cyan-500">
+            <i data-lucide="code" class="w-6 h-6"></i>
+            <span class="font-bold">ABM_CTF</span>
+        </div>
+        <button id="mobile-menu-btn" class="text-cyan-500">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="fixed md:relative top-0 left-0 h-screen w-64 bg-black/95 md:bg-black border-r border-cyan-500/20 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out pt-16 md:pt-0">
+        <div class="p-6 border-b border-cyan-500/20 hidden md:flex items-center gap-2">
+            <i data-lucide="code" class="text-cyan-500 w-6 h-6"></i>
+            <h1 class="text-xl font-bold tracking-widest text-cyan-500 pt-1">ABM_CTF</h1>
+        </div>
+
+        <nav class="p-4 space-y-2">
+            <div class="text-xs text-gray-600 mb-4 px-4 uppercase tracking-widest">System Modules</div>
+            <a href="index.html" class="flex items-center gap-3 px-4 py-3 rounded transition-colors bg-cyan-500/10 text-cyan-500 border-r-2 border-cyan-500">
+                <i data-lucide="terminal" class="w-5 h-5"></i>
+                <span class="font-mono tracking-wider">TERMINAL</span>
+            </a>
+            <a href="challenges.html" class="flex items-center gap-3 px-4 py-3 rounded transition-colors text-gray-500 hover:text-cyan-400 hover:bg-cyan-500/5">
+                <i data-lucide="flag" class="w-5 h-5"></i>
+                <span class="font-mono tracking-wider">CHALLENGES</span>
+            </a>
+        </nav>
+
+        <div class="absolute bottom-0 w-full p-4 border-t border-cyan-500/20">
+            <div class="mt-4 text-xs text-gray-700 text-center">
+                ABM College CTF v1.0
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/80 z-30 hidden"></div>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto relative bg-grid-pattern h-screen">
+        <div class="max-w-6xl mx-auto h-full flex flex-col items-center justify-center gap-8 mt-10 md:mt-0">
+            <h1 id="main-title" class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-cyan-600 tracking-tighter opacity-0 transform -translate-y-5 transition-all duration-700">
+                ABM_COLLEGE_CTF
+            </h1>
+
+            <p id="subtitle" class="text-gray-400 max-w-lg text-center opacity-0 transition-opacity duration-700 delay-500">
+                Welcome to the simulation. Your skills will be tested. <br />
+                Can you bypass the security layers?
+            </p>
+
+            <!-- Terminal -->
+            <div class="font-mono text-sm sm:text-base w-full max-w-4xl mx-auto border border-cyan-500/30 bg-black shadow-[0_0_20px_rgba(0,255,0,0.1)] rounded-sm overflow-hidden">
+                <!-- Terminal Header -->
+                <div class="bg-gray-900 border-b border-cyan-500/30 px-4 py-2 flex items-center justify-between select-none">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-cyan-500/50"></div>
+                    </div>
+                    <div class="text-cyan-500/50 text-xs">root@system:~</div>
+                    <div class="w-10"></div>
+                </div>
+
+                <!-- Terminal Content -->
+                <div class="p-6 text-cyan-500 min-h-[300px] relative">
+                    <div id="terminal-lines"></div>
+                    <span class="inline-block w-2.5 h-5 bg-cyan-500 align-middle ml-1 animate-pulse"></span>
+                    
+                    <div id="enter-btn-container" class="mt-4 opacity-0 transition-opacity duration-500">
+                        <a href="challenges.html" class="inline-block bg-cyan-600 text-black px-6 py-2 rounded hover:bg-cyan-500 font-bold transition-all hover:scale-105 shadow-[0_0_15px_rgba(0,255,0,0.3)]">
+                            &gt; ENTER_CHALLENGES
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/home.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
